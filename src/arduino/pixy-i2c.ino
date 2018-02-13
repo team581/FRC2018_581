@@ -1,4 +1,4 @@
-// Copyright Jonah Snider 2018
+// Copyright 2018 Jonah Snider
 
 /*
 This sends the x coordinate and the width of a detected object via I2C.
