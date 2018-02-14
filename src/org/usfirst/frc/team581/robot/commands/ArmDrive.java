@@ -11,7 +11,7 @@ public class ArmDrive extends Command{
 		requires(Robot.arm);
 	}
 	protected void execute() {
-		Robot.arm.driveArm(Robot.oi.getJoy1Y());
+		Robot.arm.testDrive();
 	}
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
