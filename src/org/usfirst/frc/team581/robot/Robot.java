@@ -49,15 +49,6 @@ public class Robot extends TimedRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", m_chooser);
 		CameraServer.getInstance().startAutomaticCapture();
-		
-		clearLogs();
-
-	}
-	
-	private void clearLogs() {
-		for (int i = 0; i < 10; i++) {
-			SmartDashboard.putString("DB/String "+i, "");
-		}
 
 	}
 
