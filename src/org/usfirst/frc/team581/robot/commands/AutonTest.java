@@ -51,6 +51,10 @@ public class AutonTest extends Command{
 		drive(targetInches, targetInches);
 	}
 	
+	private void turnReal(double angle) {
+		
+	}
+	
 	private void waitForStop() {
 	  Robot.drive.drive(0.0, 0.0);
 	  final double minRate = 0.5;
