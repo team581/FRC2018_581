@@ -66,17 +66,17 @@ public class OI {
 	private double lastRightY = -2;
 	
 	public double getGamepadLeftX() {
-		return gamepad.getX();
+		return snapToZero(gamepad.getX());
 	}
 	public double getGamepadLeftY() {
 		//makes the robot stutter
-		return -gamepad.getY();
+		return snapToZero(-gamepad.getY());
 	}
 	public double getGamepadRightX() {
-		return gamepad.getZ();
+		return snapToZero(gamepad.getZ());
 	}
 	public double getGamepadRightY() {
-		return -gamepad.getThrottle();
+		return snapToZero(-gamepad.getThrottle());
 	}
 	public double getJoy1Y() {
 		return joy1.getY();
@@ -94,5 +94,14 @@ public class OI {
 		lt.whenPressed(new GrabEject(false));
 		lb.whenReleased(new GrabStop());
 		lt.whenReleased(new GrabStop());
+	}
+	
+	private double snapToZero(double rawInput) {
+	  if (Math.abs(rawInput) < 0.01) {
+		  return 0.0;
+	  }else {
+	      return rawInput;
+	  }
+	
 	}
 }
