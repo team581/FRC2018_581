@@ -5,8 +5,8 @@ import org.usfirst.frc.team581.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ArmAngle extends Command{
-	public double Angle;
-	public ArmAngle(double angle) {
+	public int Angle;
+	public ArmAngle(int angle) {
 		// TODO Auto-generated constructor stub
 		requires(Robot.arm);
 		Angle = angle;
