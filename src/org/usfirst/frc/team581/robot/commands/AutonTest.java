@@ -1,6 +1,7 @@
 package org.usfirst.frc.team581.robot.commands;
 
 import org.usfirst.frc.team581.robot.Robot;
+import org.usfirst.frc.team581.robot.sensors.UltraSonic;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutonTest extends Command{
 	double GET_R;
 	double GET_L;
+	public UltraSonic ultra;
 	
 	private int state;
 	public AutonTest() {
@@ -19,6 +21,7 @@ public class AutonTest extends Command{
 		Robot.drive.encL.reset();
 		SmartDashboard.putString("DB/String 0", "" + Robot.drive.encL.get());
 		SmartDashboard.putString("DB/String 1", "" + Robot.drive.encR.get());
+		ultra = new UltraSonic(0);
 		
 		state = 0;
 
@@ -48,6 +51,7 @@ public class AutonTest extends Command{
 	}
 	
 	private void driveForward(double targetInches) {
+		SmartDashboard.putString("DB/String 9", "" + ultra.getVoltage());
 		drive(targetInches, targetInches);
 	}
 	

@@ -5,18 +5,19 @@ import org.usfirst.frc.team581.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ArmAngle extends Command{
-
-	public ArmAngle() {
+	public double Angle;
+	public ArmAngle(double angle) {
 		// TODO Auto-generated constructor stub
 		requires(Robot.arm);
+		Angle = angle;
 	}
 	protected void execute() {
-		Robot.arm.setAngle(90);
+		Robot.arm.setAngle(Angle);
 	}
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

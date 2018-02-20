@@ -37,8 +37,8 @@ public class Drive extends Subsystem{
 		
         m_right.setInverted(true);
 		
-		encR = new Encoder(0,1,false, Encoder.EncodingType.k4X);
-		encL = new Encoder(2,3,true, Encoder.EncodingType.k4X); 
+		encR = new Encoder(2,3, false, Encoder.EncodingType.k4X);
+		encL = new Encoder(0,1, true, Encoder.EncodingType.k4X); 
 		encR.reset();
 		encL.reset();
 		encL.setDistancePerPulse(INCHES_PER_PULSE);

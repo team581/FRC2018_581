@@ -24,7 +24,8 @@ public class RobotMap {
 	
 	public static int leftMotor = 1;
 	public static int rightMotor = 0;
-	public static int grabMotor = 2;
+	public static int grabLeftMotor = 3;
+	public static int grabRightMotor = 4;
 	
 	public static int solenoid1 = 0;
 	public static int solenoid2 = 1;

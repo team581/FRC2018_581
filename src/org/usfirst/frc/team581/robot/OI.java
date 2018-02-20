@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team581.robot;
 
+import org.usfirst.frc.team581.robot.commands.ArmAngle;
+import org.usfirst.frc.team581.robot.commands.ArmDrive;
 import org.usfirst.frc.team581.robot.commands.GrabEject;
 import org.usfirst.frc.team581.robot.commands.GrabStop;
 import org.usfirst.frc.team581.robot.commands.SolenoidOff;
@@ -60,6 +62,8 @@ public class OI {
 	Button a = new JoystickButton(gamepad, 2);  //let go off tote
 	Button lb = new JoystickButton(gamepad, 5); //grab in
 	Button lt = new JoystickButton(gamepad, 7);//eject
+	Button y = new JoystickButton(gamepad, 4); //angles of arm
+	Button b = new JoystickButton(gamepad, 3);
 	
 	private double lastLeftY = -2;
 	
@@ -94,6 +98,10 @@ public class OI {
 		lt.whenPressed(new GrabEject(false));
 		lb.whenReleased(new GrabStop());
 		lt.whenReleased(new GrabStop());
+		//y.whenPressed(new ArmAngle(0));
+		//y.whenReleased(new ArmDrive());
+		//b.whenPressed(new ArmAngle(Robot.arm.targetPositionRotations));
+		//y.whenPressed(new ArmDrive(false));
 	}
 	
 	private double snapToZero(double rawInput) {
