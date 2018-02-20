@@ -37,8 +37,8 @@ public class Drive extends Subsystem{
 		
         m_right.setInverted(true);
 		
-		encR = new Encoder(0,1,false, Encoder.EncodingType.k4X);
-		encL = new Encoder(2,3,true, Encoder.EncodingType.k4X); 
+		encR = new Encoder(2,3, false, Encoder.EncodingType.k4X);
+		encL = new Encoder(0,1, true, Encoder.EncodingType.k4X); 
 		encR.reset();
 		encL.reset();
 		encL.setDistancePerPulse(INCHES_PER_PULSE);
@@ -112,17 +112,19 @@ public class Drive extends Subsystem{
 		
 		double leftRate = Robot.drive.encR.getRate();
 		double rightRate = Robot.drive.encL.getRate();
+		/*
 		SmartDashboard.putString("DB/String 5", "" + leftRate);
 		SmartDashboard.putString("DB/String 0", "" + rightRate);
 		SmartDashboard.putString("DB/String 1", "turnInput");
 		SmartDashboard.putString("DB/String 2", ""+turnInput);
 		SmartDashboard.putString("DB/String 6", "forwardInput");
 		SmartDashboard.putString("DB/String 7", ""+forwardInput);
+		*/
 
 		double maxInchesPerSecond = 72.0;
 		double turningInchesPerSecond = 50.0;
 		double targetInchesPerSecond = maxInchesPerSecond * forwardInput;
-		SmartDashboard.putString("DB/String 4", "" + targetInchesPerSecond);
+		//SmartDashboard.putString("DB/String 4", "" + targetInchesPerSecond);
 
 		double leftVelocity = limitAcceleration(pidL.getSetpoint(), targetInchesPerSecond + turnInput * turningInchesPerSecond);
 		double rghtVelocity = limitAcceleration(pidR.getSetpoint(), targetInchesPerSecond - turnInput * turningInchesPerSecond);

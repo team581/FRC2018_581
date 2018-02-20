@@ -61,6 +61,10 @@ public class UltraSonic extends AnalogInput{
 	        total /= samples;
 	        return total;
 	    }
+	    
+	    public boolean boxIsIn() {
+	    	return this.getVoltage()< 0.2;
+	    }
 
 	    public double getDistance() {
 	        return this.getVoltage() * INCHES_PER_VOLT;

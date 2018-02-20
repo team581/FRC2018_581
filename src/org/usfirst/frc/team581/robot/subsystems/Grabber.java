@@ -6,6 +6,7 @@ import org.usfirst.frc.team581.robot.commands.CompressorLoop;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Grabber extends Subsystem{
@@ -14,11 +15,15 @@ public class Grabber extends Subsystem{
 	Solenoid solenoid2 = new Solenoid(RobotMap.solenoid2);
 	boolean compressorEnable = false;
 	
-	Spark grabberMotor = new Spark(RobotMap.grabMotor);
+	Spark grabberLeftMotor = new Spark(RobotMap.grabLeftMotor);
+	Spark grabberRightMotor = new Spark(RobotMap.grabRightMotor);
+	SpeedControllerGroup grabberMotors;
 	
 	public Grabber() {
-		// TODO Auto-generated constructor stub
+		grabberRightMotor.setInverted(true);
+		grabberMotors = new SpeedControllerGroup(grabberLeftMotor, grabberRightMotor);
 	}
+	
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
 		setDefaultCommand(new CompressorLoop());
@@ -52,14 +57,16 @@ public class Grabber extends Subsystem{
 		}
 	}
 	
+	final public double GRABBER_POWER = 0.65;
+	
 	public void grab(){
-		grabberMotor.set(1.0);
+		grabberMotors.set(GRABBER_POWER);
 	}
 	public void eject() {
-		grabberMotor.set(-1.0);
+		grabberMotors.set(-GRABBER_POWER);
 	}
 	public void stopMotor() {
-		grabberMotor.set(0);
+		grabberMotors.set(0);
 	}
 
 }

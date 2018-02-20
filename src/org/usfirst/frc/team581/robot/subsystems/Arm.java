@@ -2,6 +2,7 @@ package org.usfirst.frc.team581.robot.subsystems;
 
 
 import org.usfirst.frc.team581.robot.Robot;
+import org.usfirst.frc.team581.robot.commands.ArmAngle;
 import org.usfirst.frc.team581.robot.commands.ArmDrive;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -27,18 +28,19 @@ public class Arm extends Subsystem{
 	public Arm() {
 		//armDrive = new DifferentialDrive(tal0, tal1);
 		tal1.follow(tal0);
-		tal0.setInverted(true);
-		tal0.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute,0,0);
+		tal1.setInverted(true);
+		tal0.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute,Constants.kPIDLoopIdx,0);
 		tal0.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		/* choose to ensure sensor is positive when output is positive */
 		tal0.setSensorPhase(Constants.kSensorPhase);
 		
 		//tal0.configForwardLimitSwitchSource(tal0, LimitSwitchNormal NormallyOpen, Constants.kTimeoutMs);
-		tal0.configForwardSoftLimitThreshold(1000, 0);
-		tal0.configReverseSoftLimitThreshold(-200, 0);
-		tal0.configForwardSoftLimitEnable(true, 0);
-		tal0.configReverseSoftLimitEnable(true, 0);
+		//tal0.configForwardSoftLimitThreshold(4400, 0);
+		//tal0.configReverseSoftLimitThreshold(2000, 0);
+		tal0.configForwardSoftLimitEnable(false, 0);
+		tal0.configReverseSoftLimitEnable(false, 0);
 
+		targetPositionRotations = tal0.getSensorCollection().getPulseWidthPosition();
 		/*
 		 * set the allowable closed-loop error, Closed-Loop output will be
 		 * neutral within this range. See Table in Section 17.2.1 for native
@@ -46,17 +48,19 @@ public class Arm extends Subsystem{
 		 */
 		tal0.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 		
+		//tal0.configOpenloopRamp(1, 0);
+		
 		/* set closed loop gains in slot0, typically kF stays zero. */
 		tal0.config_kF(Constants.kPIDLoopIdx, 0.0, Constants.kTimeoutMs);
-		tal0.config_kP(Constants.kPIDLoopIdx, 80.0, Constants.kTimeoutMs);
+		tal0.config_kP(Constants.kPIDLoopIdx, 0.2, Constants.kTimeoutMs);
 		tal0.config_kI(Constants.kPIDLoopIdx, 0.0, Constants.kTimeoutMs);
-		tal0.config_kD(Constants.kPIDLoopIdx, 0.1, Constants.kTimeoutMs);
+		tal0.config_kD(Constants.kPIDLoopIdx, 0.0, Constants.kTimeoutMs);
 		
 	}
 	
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-		setDefaultCommand(new ArmDrive());
+		setDefaultCommand(new ArmAngle(targetPositionRotations));
 	}
 	
 	double velocity;
@@ -77,14 +81,12 @@ public class Arm extends Subsystem{
 		SmartDashboard.putString("DB/String 3", "" + pulseWidthPos);
 	}
 	
-	public void setAngle(double angle) {
-		//tal0.setSelectedSensorPosition(targetPositionRotations, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		targetPositionRotations = angle * (4096/360);
+	public void setAngle(double Angle) {
 		pulseWidthPos = tal0.getSelectedSensorPosition(0);
-		SmartDashboard.putString("DB/String 3", "" + pulseWidthPos);
-		SmartDashboard.putString("DB/String 2", "" + targetPositionRotations);
-		tal0.set(ControlMode.Position, targetPositionRotations);
-		//tal0.setSelectedSensorPosition(targetPositionRotations, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		SmartDashboard.putString("DB/String 1", "" + pulseWidthPos);
+		SmartDashboard.putString("DB/String 2", "" + Angle);
+		SmartDashboard.putString("DB/String 3", "" + targetPositionRotations);
+		//tal0.set(ControlMode.Position, Angle);
 	}
 
 }
