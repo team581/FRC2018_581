@@ -15,9 +15,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team581.robot.commands.AutonEncTest;
 import org.usfirst.frc.team581.robot.commands.AutonGroup;
 import org.usfirst.frc.team581.robot.commands.AutonTest;
 import org.usfirst.frc.team581.robot.subsystems.Arm;
+import org.usfirst.frc.team581.robot.subsystems.AutonDrive;
 import org.usfirst.frc.team581.robot.subsystems.Drive;
 import org.usfirst.frc.team581.robot.subsystems.Grabber;
 
@@ -33,7 +35,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	public static Arm arm = new Arm();
 	public static Grabber grabber = new Grabber();
-	
+	public static AutonDrive autondrive = new AutonDrive();
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -91,6 +93,11 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		m_autonomousCommand = new AutonTest();
 		if (m_autonomousCommand != null) m_autonomousCommand.start();
+		
+		drive.resetEncoders();
+		drive.stop();
+		autondrive.resetEncoders();
+		autondrive.start();
 	}
 
 	/**
@@ -110,6 +117,11 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		
+		autondrive.resetEncoders();
+		autondrive.stop();
+		drive.resetEncoders();
+		drive.start();
 	}
 
 	/**

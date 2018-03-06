@@ -22,7 +22,7 @@ public class Constants {
 	public static final int kTimeoutMs = 10;
 	
 	/* choose so that Talon does not report sensor out of phase */
-	public static boolean kSensorPhase = true;
+	public static boolean kSensorPhase = false;
 
 	/* choose based on what direction you want to be positive,
 		this does not affect motor invert. */

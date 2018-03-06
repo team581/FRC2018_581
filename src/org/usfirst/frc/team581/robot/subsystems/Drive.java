@@ -18,13 +18,13 @@ import edu.wpi.first.wpilibj.tables.ITable;
 
 public class Drive extends Subsystem{
 	
-	//public DifferentialDrive mydrive;
+	public DifferentialDrive mydrive;
 	public Encoder encR;
 	public Encoder encL;
 	public Spark m_left = new Spark(RobotMap.leftMotor);
 	public Spark m_right = new Spark(RobotMap.rightMotor);
-	public double INCHES_PER_PULSE = 1/18.9;
-	public double kP = 0.01;
+	public double INCHES_PER_PULSE = 1/13.08;
+	public double kP = 0.005;
 	public double kI = 0.0;
 	public double kD = 0.001;
 	public PIDController pidL;
@@ -33,14 +33,14 @@ public class Drive extends Subsystem{
 
 	
 	public Drive() {
-		//mydrive = new DifferentialDrive(m_left, m_right);
+		mydrive = new DifferentialDrive(m_left, m_right);
 		
         m_right.setInverted(true);
 		
 		encR = new Encoder(2,3, false, Encoder.EncodingType.k4X);
 		encL = new Encoder(0,1, true, Encoder.EncodingType.k4X); 
-		encR.reset();
-		encL.reset();
+        resetEncoders();
+		
 		encL.setDistancePerPulse(INCHES_PER_PULSE);
 		encR.setDistancePerPulse(INCHES_PER_PULSE);
 		encL.setPIDSourceType(PIDSourceType.kRate);
@@ -50,12 +50,25 @@ public class Drive extends Subsystem{
     	pidR = new PIDController(kP, kI, kD, encR, m_right);
     	pidL.setAbsoluteTolerance(TOLERANCE);
     	pidR.setAbsoluteTolerance(TOLERANCE);
-		
+        stop();
+	}
+	
+	public void start() {
         pidL.enable();
         pidR.enable();
-
 	}
 
+	public void stop() {
+		pidL.disable();
+		pidR.disable();
+	}
+	
+	public void resetEncoders(){
+		encR.reset();
+		encL.reset();
+	}
+	
+	
 	@Override
 	protected void initDefaultCommand() {
       setDefaultCommand(new DriverDrive());		
@@ -96,7 +109,7 @@ public class Drive extends Subsystem{
 		    return Math.min(1.0, Math.pow(2, x) - 1);
 	}
 	
-	final private double MAX_ACCEL = 3.0;
+	final private double MAX_ACCEL = 4.0;
 	private double limitAcceleration(double currentVelocity, double futureVelocity) {
 		double difference = futureVelocity - currentVelocity;
 		if (Math.abs(difference) > MAX_ACCEL) {
@@ -107,22 +120,15 @@ public class Drive extends Subsystem{
 	
 	public double leftPulses, rightPulses;
 	public void driveWithGamepad(double forwardInput, double turnInput) {
+		if (pidL == null || pidR == null) {
+			SmartDashboard.putString("DB/String 7", "Can't drive with null PIDs!");
+			return;
+		}
 		forwardInput = scale(forwardInput);
 		turnInput = scale(turnInput);
-		
-		double leftRate = Robot.drive.encR.getRate();
-		double rightRate = Robot.drive.encL.getRate();
-		/*
-		SmartDashboard.putString("DB/String 5", "" + leftRate);
-		SmartDashboard.putString("DB/String 0", "" + rightRate);
-		SmartDashboard.putString("DB/String 1", "turnInput");
-		SmartDashboard.putString("DB/String 2", ""+turnInput);
-		SmartDashboard.putString("DB/String 6", "forwardInput");
-		SmartDashboard.putString("DB/String 7", ""+forwardInput);
-		*/
 
 		double maxInchesPerSecond = 72.0;
-		double turningInchesPerSecond = 50.0;
+		double turningInchesPerSecond = 30.0;
 		double targetInchesPerSecond = maxInchesPerSecond * forwardInput;
 		//SmartDashboard.putString("DB/String 4", "" + targetInchesPerSecond);
 
@@ -134,7 +140,7 @@ public class Drive extends Subsystem{
 		
 	}
 	public void drive(double xspeed, double yspeed) {
-		//mydrive.tankDrive(xspeed, yspeed);
+		mydrive.tankDrive(xspeed, yspeed);
 	}
 	
 	

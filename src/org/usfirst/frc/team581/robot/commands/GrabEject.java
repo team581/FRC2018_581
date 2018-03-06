@@ -6,15 +6,17 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class GrabEject extends Command{
 	boolean grabEj;
-	public GrabEject(boolean ge) {
+	double Power;
+	public GrabEject(boolean ge, double power) {
 		// TODO Auto-generated constructor stub
 		grabEj = ge;
+		Power = power;
 	}
 	protected void execute() {
 		if(grabEj) {
-			Robot.grabber.grab();
+			Robot.grabber.grab(Power);
 		}else {
-			Robot.grabber.eject();
+			Robot.grabber.eject(Power);
 		}
 	}
 	

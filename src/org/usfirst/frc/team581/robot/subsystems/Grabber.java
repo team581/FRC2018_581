@@ -57,12 +57,12 @@ public class Grabber extends Subsystem{
 		}
 	}
 	
-	final public double GRABBER_POWER = 0.65;
+	//final public double GRABBER_POWER = 0.65;
 	
-	public void grab(){
+	public void grab(double GRABBER_POWER){
 		grabberMotors.set(GRABBER_POWER);
 	}
-	public void eject() {
+	public void eject(double GRABBER_POWER) {
 		grabberMotors.set(-GRABBER_POWER);
 	}
 	public void stopMotor() {

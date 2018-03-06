@@ -8,6 +8,7 @@
 package org.usfirst.frc.team581.robot;
 
 import org.usfirst.frc.team581.robot.commands.ArmAngle;
+import org.usfirst.frc.team581.robot.commands.ArmAngleGroup;
 import org.usfirst.frc.team581.robot.commands.ArmDrive;
 import org.usfirst.frc.team581.robot.commands.GrabEject;
 import org.usfirst.frc.team581.robot.commands.GrabStop;
@@ -56,14 +57,22 @@ public class OI {
 	public Joystick joy1 = new Joystick(0);
 	
 	Button b10 = new JoystickButton(joy1, 10);
+	Button b4 = new JoystickButton(joy1, 4);  //latch on
+	Button b5 = new JoystickButton(joy1, 5);  //let go off tote
+	Button b3 = new JoystickButton(joy1, 3); //light out
+	Button b2 = new JoystickButton(joy1, 2); //light in
+
+	
 	Button rb = new JoystickButton(gamepad, 6); //angle up
 	Button rt = new JoystickButton(gamepad, 8); //angle down
-	Button x = new JoystickButton(gamepad, 1);  //latch on
-	Button a = new JoystickButton(gamepad, 2);  //let go off tote
 	Button lb = new JoystickButton(gamepad, 5); //grab in
 	Button lt = new JoystickButton(gamepad, 7);//eject
-	Button y = new JoystickButton(gamepad, 4); //angles of arm
-	Button b = new JoystickButton(gamepad, 3);
+	
+	/*angles of the arm*/
+	Button y = new JoystickButton(gamepad, 4); //angles 
+	Button b = new JoystickButton(gamepad, 3); //angle
+	Button x = new JoystickButton(gamepad, 1); //angle
+	Button a = new JoystickButton(gamepad, 2); //angle
 	
 	private double lastLeftY = -2;
 	
@@ -90,17 +99,25 @@ public class OI {
 	}
 	public OI() {
 		b10.whenPressed(new ToggleCompressor());
-		rb.whenPressed(new SolenoidOn(true));
-		rt.whenPressed(new SolenoidOff(true));
-		x.whenPressed(new SolenoidOn(false));
-		a.whenPressed(new SolenoidOff(false));
-		lb.whenPressed(new GrabEject(true));
-		lt.whenPressed(new GrabEject(false));
-		lb.whenReleased(new GrabStop());
-		lt.whenReleased(new GrabStop());
-		//y.whenPressed(new ArmAngle(0));
+		b4.whenPressed(new SolenoidOn(false));
+		b5.whenPressed(new SolenoidOff(false));
+		lt.whenPressed(new SolenoidOn(true));
+		lb.whenPressed(new SolenoidOff(true));
+		rb.whenPressed(new GrabEject(true, 0.65));
+		rt.whenPressed(new GrabEject(false, 0.65));
+		b3.whenPressed(new GrabEject(true, 0.40));
+		b2.whenPressed(new GrabEject(false, 0.40));
+		b3.whenReleased(new GrabStop());
+		b2.whenReleased(new GrabStop());
+		rb.whenReleased(new GrabStop());
+		rt.whenReleased(new GrabStop());
+		
+		a.whenPressed(new ArmAngleGroup(720)); //pick up
+		y.whenPressed(new ArmAngleGroup(2300)); //scale
+		b.whenPressed(new ArmAngleGroup(1100)); //switch
+		x.whenPressed(new ArmAngleGroup(850)); //vaults
+
 		//y.whenReleased(new ArmDrive());
-		//b.whenPressed(new ArmAngle(Robot.arm.targetPositionRotations));
 		//y.whenPressed(new ArmDrive(false));
 	}
 	

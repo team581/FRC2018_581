@@ -10,28 +10,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutonTest extends Command{
 	double GET_R;
 	double GET_L;
-	public UltraSonic ultra;
 	
 	private int state;
 	public AutonTest() {
-		// TODO Auto-generated constructor stub
 		requires(Robot.drive);
-		setTimeout(4.0);
-		Robot.drive.encR.reset();
-		Robot.drive.encL.reset();
-		SmartDashboard.putString("DB/String 0", "" + Robot.drive.encL.get());
-		SmartDashboard.putString("DB/String 1", "" + Robot.drive.encR.get());
-		ultra = new UltraSonic(0);
-		
+		Robot.drive.resetEncoders();
 		state = 0;
-
 	}
 	
 
 	protected void execute() {	
 		switch (state) {
 	    case 0:
-	    	driveForward(12*1);
+	    	driveForward(120);
 	    	break;
 	    case 10:
 	    	waitForStop();
@@ -41,24 +32,21 @@ public class AutonTest extends Command{
 	    	break;
 	    default: ; // do nothing
 	    }
-		
 	}
 	
 	private void nextState() {
-	  Robot.drive.encL.reset();
-	  Robot.drive.encR.reset();
-	  state++;
+		Robot.drive.encL.reset();
+		Robot.drive.encR.reset();
+		state++;
 	}
 	
 	private void driveForward(double targetInches) {
-		SmartDashboard.putString("DB/String 9", "" + ultra.getVoltage());
-		drive(targetInches, targetInches);
+		// SmartDashboard.putString("DB/String 9", "" + ultra.getVoltage());
+		this.drive(targetInches, targetInches);
 	}
 	
-	private void turnReal(double angle) {
-		
-	}
 	
+	// this is not fully debugged
 	private void waitForStop() {
 	  Robot.drive.drive(0.0, 0.0);
 	  final double minRate = 0.5;
@@ -89,7 +77,8 @@ public class AutonTest extends Command{
 		final boolean isRightDone = Math.abs(rightInches) > Math.abs(rightTargetInches);
 		
 		if (isLeftDone && isRightDone) {
-			nextState();
+			//nextState();
+			Robot.drive.drive(0.0, 0.0);
 			return;
 		}
 		
@@ -97,10 +86,9 @@ public class AutonTest extends Command{
 		double rightPower = 0.0;
 
 
-		
-		double basePower = 0.5;
+		double basePower = 0.65;
 		if (Math.signum(leftTargetInches) != Math.signum(rightTargetInches)) {
-			basePower = 0.45;
+			basePower = 0.5;
 		}
 		
 		if (!isRightDone) {
@@ -123,9 +111,9 @@ public class AutonTest extends Command{
 		SmartDashboard.putString("DB/String 5", "" + rightInches);
 		SmartDashboard.putString("DB/String 6", "" + rightTargetInches);
 		SmartDashboard.putString("DB/String 7", "" + rightPower);
+		SmartDashboard.putString("DB/String 8", "" + Math.random());
 
-
-		Robot.drive.drive(leftPower, rightPower);
+		Robot.drive.drive(leftPower, -rightPower);
 	}
 	
 	private double clampToMotorRange(double power) {
@@ -141,10 +129,7 @@ public class AutonTest extends Command{
 	    return Math.min(Math.max(lo, x), hi);
 	}
 	
-	
-
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

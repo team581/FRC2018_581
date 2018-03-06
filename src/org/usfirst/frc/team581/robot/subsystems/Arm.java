@@ -49,11 +49,12 @@ public class Arm extends Subsystem{
 		/* only look at lower 12 bits of the reading */
 		targetPositionRotations &= 0xFFF;
 		
-		/* adjust for the various inversions possible... */
+		/* adjust for the various inversions possible... 
 		if (Constants.kSensorPhase) 
 			targetPositionRotations *= -1;
 		if (Constants.kMotorInvert)
 			targetPositionRotations *= -1;
+		*/
 		
 		/*
 		 * set the allowable closed-loop error, Closed-Loop output will be
@@ -66,9 +67,12 @@ public class Arm extends Subsystem{
 		
 		/* set closed loop gains in slot0, typically kF stays zero. */
 		tal0.config_kF(Constants.kPIDLoopIdx, 0.0, Constants.kTimeoutMs);
-		tal0.config_kP(Constants.kPIDLoopIdx, 0.2, Constants.kTimeoutMs);
+		tal0.config_kP(Constants.kPIDLoopIdx, 2.0, Constants.kTimeoutMs);
 		tal0.config_kI(Constants.kPIDLoopIdx, 0.0, Constants.kTimeoutMs);
 		tal0.config_kD(Constants.kPIDLoopIdx, 0.0, Constants.kTimeoutMs);
+		
+		/* Talon is configured to ramp from neutral to full within 2 seconds, and followers are configured to 0*/
+		tal0.configClosedloopRamp(0.25, 0);
 		
 		/* set tal1 as a follower of tal0 */
 		tal1.follow(tal0);
@@ -78,7 +82,7 @@ public class Arm extends Subsystem{
 	
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-		setDefaultCommand(new ArmAngle(targetPositionRotations));
+		//setDefaultCommand(new ArmAngle(targetPositionRotations));
 	}
 	
 	double velocity;
@@ -100,11 +104,16 @@ public class Arm extends Subsystem{
 	}
 	
 	public void setAngle(int Angle) {
+		SmartDashboard.putString("DB/String 2", "" + Angle);
+		//SmartDashboard.putString("DB/String 2", "" + targetPositionRotations);
+		tal0.set(ControlMode.Position, Angle);
+	}
+	
+	public void armDashboard() {
 		pulseWidthPos = tal0.getSensorCollection().getPulseWidthPosition();
+		/* only look at lower 12 bits of the reading */
+		pulseWidthPos &= 0xFFF;
 		SmartDashboard.putString("DB/String 1", "" + pulseWidthPos);
-		//SmartDashboard.putString("DB/String 2", "" + Angle);
-		SmartDashboard.putString("DB/String 2", "" + targetPositionRotations);
-		//tal0.set(ControlMode.Position, Angle);
 	}
 
 }
