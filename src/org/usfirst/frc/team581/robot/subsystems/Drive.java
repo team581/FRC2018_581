@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.tables.ITable;
 
 public class Drive extends Subsystem{
 	
-	public DifferentialDrive mydrive;
+	//public DifferentialDrive mydrive;
 	public Encoder encR;
 	public Encoder encL;
 	public Spark m_left = new Spark(RobotMap.leftMotor);
@@ -140,7 +140,7 @@ public class Drive extends Subsystem{
 		
 	}
 	public void drive(double xspeed, double yspeed) {
-		mydrive.tankDrive(xspeed, yspeed);
+		//mydrive.tankDrive(xspeed, yspeed);
 	}
 	
 	
