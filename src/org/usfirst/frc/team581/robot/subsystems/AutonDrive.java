@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonDrive extends Subsystem{
 	
+	public DifferentialDrive mydrive;
 	public Encoder encR;
 	public Encoder encL;
 	public Spark m_left = new Spark(RobotMap.leftMotor);
@@ -26,7 +27,8 @@ public class AutonDrive extends Subsystem{
 	final public double TOLERANCE = 2.0;
 
 	public AutonDrive() {
-		/*
+		mydrive = new DifferentialDrive(m_left, m_right);
+		
         m_right.setInverted(true);
 		
 		encR = new Encoder(2,3, false, Encoder.EncodingType.k4X);
@@ -43,9 +45,8 @@ public class AutonDrive extends Subsystem{
     	pidL.setAbsoluteTolerance(TOLERANCE);
     	pidR.setAbsoluteTolerance(TOLERANCE);
         stop();	
-        */
      }
-	/*
+	
 	public void start() {
         pidL.enable();
         pidR.enable();
@@ -79,7 +80,7 @@ public class AutonDrive extends Subsystem{
 	}
 	
 	public double leftPulses, rightPulses;
-	public void driveWithGamepad(double forwardVel, double turnVel, double leftTargetInches,  double rightTargetInches) {
+	public void driveWithGamepad(double forwardInput, double turnInput, double leftTargetInches,  double rightTargetInches) {
 		if (pidL == null || pidR == null) {
 			SmartDashboard.putString("DB/String 7", "Can't drive with null PIDs!");
 			return;
@@ -87,40 +88,25 @@ public class AutonDrive extends Subsystem{
 		
 		final double leftInches = encL.getDistance();
 		final double rightInches = encR.getDistance();
-		final boolean isLeftDone = Math.abs(leftInches) > Math.abs(leftTargetInches);
-		final boolean isRightDone = Math.abs(rightInches) > Math.abs(rightTargetInches);
+		//final boolean isLeftDone = Math.abs(leftInches) > Math.abs(leftTargetInches);
+		//final boolean isRightDone = Math.abs(rightInches) > Math.abs(rightTargetInches);
 		
-		if (isLeftDone && isRightDone) {
-			 pidL.setSetpoint(0);
-		     pidR.setSetpoint(0);
-		}
-		
-		forwardVel = scale(forwardVel);
-		turnVel = scale(turnVel);
+		forwardInput = scale(forwardInput);
+		turnInput = scale(turnInput);
 
-		//double maxInchesPerSecond = 72.0;
-		//double turningInchesPerSecond = 30.0;
-		//double targetInchesPerSecond = forwardVel;
+		double maxInchesPerSecond = 72.0;
+		double turningInchesPerSecond = 30.0;
+		double targetInchesPerSecond = maxInchesPerSecond * forwardInput;
 		//SmartDashboard.putString("DB/String 4", "" + targetInchesPerSecond);
 
-		double leftVelocity = limitAcceleration(pidL.getSetpoint(), forwardVel + turnVel);
-		double rghtVelocity = limitAcceleration(pidR.getSetpoint(), forwardVel - turnVel);
-		
-		if (!isRightDone) {
-	           rghtVelocity = rghtVelocity * Math.signum(rightTargetInches);
-		}
-		if (!isLeftDone) {
-			leftVelocity = leftVelocity * Math.signum(leftTargetInches);
-		}
-		
-		double difference = Math.abs(rightInches) - Math.abs(leftInches);
-		rghtVelocity *= Math.exp(-difference);
-		leftVelocity *= Math.exp(difference);
+		double leftVelocity = limitAcceleration(pidL.getSetpoint(), targetInchesPerSecond + turnInput * turningInchesPerSecond);
+		double rghtVelocity = limitAcceleration(pidR.getSetpoint(), targetInchesPerSecond - turnInput * turningInchesPerSecond);
+
         pidL.setSetpoint(leftVelocity);
         pidR.setSetpoint(rghtVelocity);
 		
 	}
-	*/
+
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

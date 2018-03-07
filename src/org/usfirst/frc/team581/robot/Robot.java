@@ -30,12 +30,15 @@ import org.usfirst.frc.team581.robot.subsystems.Grabber;
  * creating this project, you must also update the build.properties file in the
  * project.
  */
+
+//THIS VERSION WORKS
+
 public class Robot extends TimedRobot {
 	public final static Drive drive = new Drive();
 	public static OI oi;
 	public static Arm arm = new Arm();
 	public static Grabber grabber = new Grabber();
-	public static AutonDrive autondrive = new AutonDrive();
+	//public static AutonDrive autondrive = new AutonDrive();
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -91,7 +94,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = new AutonEncTest();
+		m_autonomousCommand = new AutonTest();
 		if (m_autonomousCommand != null) m_autonomousCommand.start();
 		
 		drive.resetEncoders();
@@ -121,7 +124,6 @@ public class Robot extends TimedRobot {
 		//autondrive.resetEncoders();
 		//autondrive.stop();
 		drive.resetEncoders();
-		
 		drive.start();
 	}
 
