@@ -91,13 +91,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = new AutonTest();
+		m_autonomousCommand = new AutonEncTest();
 		if (m_autonomousCommand != null) m_autonomousCommand.start();
 		
 		drive.resetEncoders();
 		drive.stop();
-		autondrive.resetEncoders();
-		autondrive.start();
+		//autondrive.resetEncoders();
+		//autondrive.start();
 	}
 
 	/**
@@ -118,9 +118,10 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand.cancel();
 		}
 		
-		autondrive.resetEncoders();
-		autondrive.stop();
+		//autondrive.resetEncoders();
+		//autondrive.stop();
 		drive.resetEncoders();
+		
 		drive.start();
 	}
 

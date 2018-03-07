@@ -11,7 +11,7 @@ public class AutonEncTest extends Command{
 		requires(Robot.autondrive);
 	}
 	protected void execute() {	
-		
+		//Robot.autondrive.driveWithGamepad(0.5, 0, 36, 36);
 	}
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub

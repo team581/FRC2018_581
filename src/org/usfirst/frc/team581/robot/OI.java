@@ -67,8 +67,6 @@ public class OI {
 	Button rt = new JoystickButton(gamepad, 8); //angle down
 	Button lb = new JoystickButton(gamepad, 5); //grab in
 	Button lt = new JoystickButton(gamepad, 7);//eject
-	Button y = new JoystickButton(gamepad, 4); //angles of arm
-	Button b = new JoystickButton(gamepad, 3);
 	
 	/*angles of the arm*/
 	Button y = new JoystickButton(gamepad, 4); //angles 
