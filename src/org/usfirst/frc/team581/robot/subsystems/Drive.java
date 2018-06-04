@@ -18,12 +18,12 @@ import edu.wpi.first.wpilibj.tables.ITable;
 
 public class Drive extends Subsystem{
 	
-	//public DifferentialDrive mydrive;
+	public DifferentialDrive mydrive;
 	public Encoder encR;
 	public Encoder encL;
 	public Spark m_left = new Spark(RobotMap.leftMotor);
 	public Spark m_right = new Spark(RobotMap.rightMotor);
-	public double INCHES_PER_PULSE = 1/13.08;
+	public double INCHES_PER_PULSE = 1/ 18.9;             //1/13.08;
 	public double kP = 0.005;
 	public double kI = 0.0;
 	public double kD = 0.001;
@@ -33,7 +33,7 @@ public class Drive extends Subsystem{
 
 	
 	public Drive() {
-		mydrive = new DifferentialDrive(m_left, m_right);
+		//mydrive = new DifferentialDrive(m_left, m_right);
 		
         m_right.setInverted(true);
 		
@@ -130,7 +130,8 @@ public class Drive extends Subsystem{
 		double maxInchesPerSecond = 72.0;
 		double turningInchesPerSecond = 30.0;
 		double targetInchesPerSecond = maxInchesPerSecond * forwardInput;
-		//SmartDashboard.putString("DB/String 4", "" + targetInchesPerSecond);
+		SmartDashboard.putString("DB/String 4", "" + forwardInput);
+		SmartDashboard.putString("DB/String 7", "" + turnInput);
 
 		double leftVelocity = limitAcceleration(pidL.getSetpoint(), targetInchesPerSecond + turnInput * turningInchesPerSecond);
 		double rghtVelocity = limitAcceleration(pidR.getSetpoint(), targetInchesPerSecond - turnInput * turningInchesPerSecond);

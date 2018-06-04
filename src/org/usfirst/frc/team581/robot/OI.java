@@ -53,28 +53,26 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 	
-	public Joystick gamepad = new Joystick(3);
-	public Joystick joy1 = new Joystick(0);
-	
-	Button b10 = new JoystickButton(joy1, 10);
-	Button b4 = new JoystickButton(joy1, 4);  //latch on
-	Button b5 = new JoystickButton(joy1, 5);  //let go off tote
-	Button b3 = new JoystickButton(joy1, 3); //light out
-	Button b2 = new JoystickButton(joy1, 2); //light in
+	public Joystick gamepad = new Joystick(0);
+	public Joystick gamepad1 = new Joystick(1);
+	/*
+	Button y1 = new JoystickButton(gamepad1, 4);  //latch on
+	Button x1 = new JoystickButton(gamepad1, 1);  //let go off tote
+	Button b1 = new JoystickButton(gamepad1, 3); //light out
+	Button a1 = new JoystickButton(gamepad1, 2); //light in
 
+	*/
+	Button rb1 = new JoystickButton(gamepad1, 6); //angle up
+	Button rt1 = new JoystickButton(gamepad1, 8); //angle down
+	Button lb1 = new JoystickButton(gamepad1, 5); //grab in
+	Button lt1 = new JoystickButton(gamepad1, 7);//eject
 	
-	Button rb = new JoystickButton(gamepad, 6); //angle up
-	Button rt = new JoystickButton(gamepad, 8); //angle down
-	Button lb = new JoystickButton(gamepad, 5); //grab in
-	Button lt = new JoystickButton(gamepad, 7);//eject
-	Button y = new JoystickButton(gamepad, 4); //angles of arm
-	Button b = new JoystickButton(gamepad, 3);
 	
 	/*angles of the arm*/
-	Button y = new JoystickButton(gamepad, 4); //angles 
-	Button b = new JoystickButton(gamepad, 3); //angle
-	Button x = new JoystickButton(gamepad, 1); //angle
-	Button a = new JoystickButton(gamepad, 2); //angle
+	Button x1 = new JoystickButton(gamepad1, 3); //angles 
+	Button y1 = new JoystickButton(gamepad1, 4); //angle
+	Button b1 = new JoystickButton(gamepad1, 2); //angle
+	Button a1 = new JoystickButton(gamepad1, 1); //angle
 	
 	private double lastLeftY = -2;
 	
@@ -93,31 +91,30 @@ public class OI {
 	public double getGamepadRightY() {
 		return snapToZero(-gamepad.getThrottle());
 	}
-	public double getJoy1Y() {
-		return joy1.getY();
+	public double getgamepad1Y() {
+		return gamepad1.getY();
 	}
-	public double getJoy1Z() {
-		return joy1.getZ();
+	public double getgamepad1Z() {
+		return gamepad1.getZ();
+	}
+	//gamepad1 joystick values
+	public double getGamepad1LeftY() {
+		return snapToZero(-gamepad1.getY());
+	}
+	public double getGamepad1RightX() {
+		return snapToZero(gamepad1.getZ());
 	}
 	public OI() {
-		b10.whenPressed(new ToggleCompressor());
-		b4.whenPressed(new SolenoidOn(false));
-		b5.whenPressed(new SolenoidOff(false));
-		lt.whenPressed(new SolenoidOn(true));
-		lb.whenPressed(new SolenoidOff(true));
-		rb.whenPressed(new GrabEject(true, 0.65));
-		rt.whenPressed(new GrabEject(false, 0.65));
-		b3.whenPressed(new GrabEject(true, 0.40));
-		b2.whenPressed(new GrabEject(false, 0.40));
-		b3.whenReleased(new GrabStop());
-		b2.whenReleased(new GrabStop());
-		rb.whenReleased(new GrabStop());
-		rt.whenReleased(new GrabStop());
+		//b10.whenPressed(new ToggleCompressor());
+		rt1.whenPressed(new SolenoidOn(false));
+		rb1.whenPressed(new SolenoidOff(false));
+		lt1.whenPressed(new SolenoidOn(true));
+		lb1.whenPressed(new SolenoidOff(true));
 		
-		a.whenPressed(new ArmAngleGroup(720)); //pick up
-		y.whenPressed(new ArmAngleGroup(2300)); //scale
-		b.whenPressed(new ArmAngleGroup(1100)); //switch
-		x.whenPressed(new ArmAngleGroup(850)); //vaults
+		x1.whenPressed(new ArmAngleGroup(720)); //pick up
+		y1.whenPressed(new ArmAngleGroup(2300)); //scale
+		b1.whenPressed(new ArmAngleGroup(1100)); //switch
+		a1.whenPressed(new ArmAngleGroup(850)); //vaults
 
 		//y.whenReleased(new ArmDrive());
 		//y.whenPressed(new ArmDrive(false));

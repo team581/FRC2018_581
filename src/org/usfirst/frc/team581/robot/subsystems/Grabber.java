@@ -2,6 +2,7 @@ package org.usfirst.frc.team581.robot.subsystems;
 
 import org.usfirst.frc.team581.robot.RobotMap;
 import org.usfirst.frc.team581.robot.commands.CompressorLoop;
+import org.usfirst.frc.team581.robot.commands.GrabEject;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -26,7 +27,8 @@ public class Grabber extends Subsystem{
 	
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-		setDefaultCommand(new CompressorLoop());
+		//setDefaultCommand(new CompressorLoop());
+		setDefaultCommand(new GrabEject());
 	}
 	public void solenoidOn(boolean sol) {
 		if(sol) {
@@ -64,6 +66,23 @@ public class Grabber extends Subsystem{
 	}
 	public void eject(double GRABBER_POWER) {
 		grabberMotors.set(-GRABBER_POWER);
+	}
+	public double limit(double POWER) {
+		final double minPower = 0.4;
+		if (POWER < 0) {
+			return clamp(-1.0, POWER, -minPower);
+		}else {
+			return clamp(minPower, POWER, 1.0);
+		}
+	}
+	public double clamp(double lo, double x, double hi) {
+		return Math.min(Math.max(lo, x), hi);
+	}
+	public void grabPower(double GPOWER, double TPOWER) {
+		double leftPower = limit(GPOWER/2 + TPOWER/4);
+		double rightPower = limit(GPOWER/2 + TPOWER/4);
+		grabberLeftMotor.set(leftPower);
+		grabberLeftMotor.set(rightPower);
 	}
 	public void stopMotor() {
 		grabberMotors.set(0);

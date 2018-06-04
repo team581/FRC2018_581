@@ -8,15 +8,19 @@
 package org.usfirst.frc.team581.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team581.robot.commands.AutonEncTest;
 import org.usfirst.frc.team581.robot.commands.AutonGroup;
+import org.usfirst.frc.team581.robot.commands.AutonLeft;
+import org.usfirst.frc.team581.robot.commands.AutonRight;
 import org.usfirst.frc.team581.robot.commands.AutonTest;
 import org.usfirst.frc.team581.robot.subsystems.Arm;
 import org.usfirst.frc.team581.robot.subsystems.AutonDrive;
@@ -36,6 +40,8 @@ public class Robot extends TimedRobot {
 	public static Arm arm = new Arm();
 	public static Grabber grabber = new Grabber();
 	public static AutonDrive autondrive = new AutonDrive();
+	public String gameData;
+	Compressor compressor = new Compressor(0);
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -51,8 +57,8 @@ public class Robot extends TimedRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", m_chooser);
 		CameraServer.getInstance().startAutomaticCapture();
-		
 		clearLogs();
+		compressor.start();
 
 	}
 	
@@ -91,13 +97,22 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = new AutonTest();
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if(gameData.length() > 0) {
+			if(gameData.charAt(0) == 'L') {
+				SmartDashboard.putString("DB/String 3", "Autonomous Left running!");
+				m_autonomousCommand = new AutonLeft(0.8, 0, 0, 36, 36);
+			}else {
+				SmartDashboard.putString("DB/String 7", "Autonomous Right running!");
+				m_autonomousCommand = new AutonRight(0.8, 0, 0, 36, 36);		
+			}
+		}
+		//m_autonomousCommand = new AutonLeft(0.8, 0, 0, 36, 36);
 		if (m_autonomousCommand != null) m_autonomousCommand.start();
-		
-		drive.resetEncoders();
-		drive.stop();
 		autondrive.resetEncoders();
 		autondrive.start();
+		drive.resetEncoders();
+		drive.stop();
 	}
 
 	/**

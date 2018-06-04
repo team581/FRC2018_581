@@ -67,7 +67,7 @@ public class Arm extends Subsystem{
 		
 		/* set closed loop gains in slot0, typically kF stays zero. */
 		tal0.config_kF(Constants.kPIDLoopIdx, 0.0, Constants.kTimeoutMs);
-		tal0.config_kP(Constants.kPIDLoopIdx, 2.0, Constants.kTimeoutMs);
+		tal0.config_kP(Constants.kPIDLoopIdx, 2.4, Constants.kTimeoutMs);
 		tal0.config_kI(Constants.kPIDLoopIdx, 0.0, Constants.kTimeoutMs);
 		tal0.config_kD(Constants.kPIDLoopIdx, 0.0, Constants.kTimeoutMs);
 		
@@ -87,7 +87,7 @@ public class Arm extends Subsystem{
 	
 	double velocity;
 	public void testDrive () {
-		if (Robot.oi.joy1.getRawButton(1)) {
+		if (Robot.oi.gamepad1.getRawButton(1)) {
 			tal0.set(ControlMode.PercentOutput, 0.25); /* 25 % output */
 			velocity = tal0.getSelectedSensorVelocity(0);
 		}
@@ -98,7 +98,7 @@ public class Arm extends Subsystem{
 	
 	public void driveArm() {
 		//armDrive.tankDrive(y, y);
-		tal0.set(ControlMode.PercentOutput, Robot.oi.joy1.getY());
+		tal0.set(ControlMode.PercentOutput, Robot.oi.gamepad1.getY());
 		pulseWidthPos = tal0.getSelectedSensorPosition(0);
 		SmartDashboard.putString("DB/String 3", "" + pulseWidthPos);
 	}
